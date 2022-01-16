@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pliki źródłowe">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Pliki źródłowe\OPENGL">
+      <UniqueIdentifier>{aeb65b27-3816-439f-99b4-d80757195d0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\LIBS">
+      <UniqueIdentifier>{1f0fcc99-c716-44e4-8641-013b7f94cd06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\OPENGL">
+      <UniqueIdentifier>{a2b4113b-acb0-4cd3-a3f3-d569cfe34438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\LOADERS">
+      <UniqueIdentifier>{049b0523-67a4-478d-9b07-c6bce88ed403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\LOADERS">
+      <UniqueIdentifier>{76335d31-c61e-4d09-897c-35589fa7b8e1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\glad\glad.c">
+      <Filter>Pliki źródłowe\OPENGL</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>Pliki źródłowe\LOADERS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Libs\KHR\khrplatform.h">
+      <Filter>Pliki nagłówkowe\OPENGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\glad\glad.h">
+      <Filter>Pliki nagłówkowe\OPENGL</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderLoader.h">
+      <Filter>Pliki nagłówkowe\LOADERS</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
