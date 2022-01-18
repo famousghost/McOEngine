@@ -2,7 +2,8 @@
 #include "ShaderLoader.h"
 #include <glad.h>
 #include <GLFW/glfw3.h>
-
+#include "Libs/glm-0.9.6.3/glm/glm/gtc/matrix_transform.hpp"
+#include "Libs/glm-0.9.6.3/glm/glm/gtc/type_ptr.hpp"
 
 #define OPENGL_MAJOR_VERSION 3
 #define OPENGL_MINOR_VERSION 3
@@ -24,7 +25,6 @@ struct float3
 
 int main()
 {
-
     if (not glfwInit())
     {
         std::cerr << "Cannot initialize GLFW error" << std::endl;
@@ -158,28 +158,57 @@ int main()
 
     glBindVertexArray(0);
 
-
-
     //Project Init End
 
 
-
+    glm::vec3 cameraPos = glm::vec3(2.0f, 2.0f, 0.0f);
+    glEnable(GL_DEPTH_TEST);
+    float t = 0.0f;
     while (not glfwWindowShouldClose(window))
     {
         glfwPollEvents();
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+        model = glm::rotate(model, glm::radians(t), glm::vec3(0.0f, 1.0f, 0.0f));
+        //model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
+        glm::mat4 view = glm::mat4(1.0f);
+
+        view = glm::lookAt(cameraPos, cameraPos + glm::vec3(-0.5f, -0.5f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+        glm::mat4 projection = glm::mat4(1.0f);
+
+        projection = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH / WINDOW_HEIGHT, 0.3f, 1000.0f);
+
+        glUseProgram(l_shaderProgramId);
+
+        unsigned int uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCOENGINE_MATRIX_M");
+        glUniformMatrix4fv(uniformLocationId, 1, GL_FALSE, glm::value_ptr(model));
+
+
+        uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCOENGINE_MATRIX_V");
+        glUniformMatrix4fv(uniformLocationId, 1, GL_FALSE, glm::value_ptr(view));
+
+        uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCOENGINE_MATRIX_P");
+        glUniformMatrix4fv(uniformLocationId, 1, GL_FALSE, glm::value_ptr(projection));
+
+        glUseProgram(0);
 
         glUseProgram(l_shaderProgramId);
         glBindVertexArray(l_vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, l_ibo);
 
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-        //glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
         glUseProgram(0);
 
+
         glfwSwapBuffers(window);
+        t += 0.1f;
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
     glDeleteVertexArrays(1, &l_vao);
