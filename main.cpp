@@ -21,6 +21,38 @@ struct float3
     float x;
     float y;
     float z;
+
+    float operator[](int i)
+    {
+        if (i == 0)
+        {
+            return x;
+        }
+        if (i == 1)
+        {
+            return y;
+        }
+        return z;
+    }
+};
+
+struct float2
+{
+    float2(float x, float y)
+        :x(x), y(y)
+    {}
+
+    float x;
+    float y;
+
+    float operator[](int i)
+    {
+        if (i == 0)
+        {
+            return x;
+        }
+        return y;
+    }
 };
 
 int main()
@@ -57,7 +89,7 @@ int main()
     //Load Shader
     McOEngine::Shaders::ShaderLoader l_ShaderLoader;
 
-    l_ShaderLoader.loadShaders("Shaders/Simple/Triangle.vs", "Shaders/Simple/Triangle.fs");
+    l_ShaderLoader.loadShaders("Shaders/Simple/FullScreen.vs", "Shaders/Simple/FullScreen.fs");
 
     l_ShaderLoader.displayShaders();
 
@@ -116,16 +148,18 @@ int main()
 
     //Create Vertex Arrays
 
-    float3 l_vertices[3]
+    float3 l_vertices[4]
     {
         float3(-1.0f, -1.0f, 0.0f),
-        float3(0.0f, 1.0f, 0.0f),
+        float3(-1.0f, 1.0f, 0.0f),
+        float3(1.0f, 1.0f, 0.0f),
         float3(1.0f, -1.0f, 0.0f)
     };
 
-    GLuint l_indices[3]
+    GLuint l_indices[6]
     {
-        0, 1, 2
+        0, 3, 2,
+        1, 2, 0
     };
     
 
@@ -142,7 +176,7 @@ int main()
 
     glBindBuffer(GL_ARRAY_BUFFER, l_vao);
 
-    glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(float3), l_vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float3), l_vertices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float3), (GLvoid*)0);
 
@@ -160,8 +194,14 @@ int main()
 
     //Project Init End
 
+    float2 screenResolution = float2(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    glm::vec3 cameraPos = glm::vec3(2.0f, 2.0f, 0.0f);
+    float3 lightPos = float3(2.0f, 2.0f, 4.0f);
+
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+
+
     glEnable(GL_DEPTH_TEST);
     float t = 0.0f;
     while (not glfwWindowShouldClose(window))
@@ -171,10 +211,9 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
         model = glm::rotate(model, glm::radians(t), glm::vec3(0.0f, 1.0f, 0.0f));
-        //model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));
         glm::mat4 view = glm::mat4(1.0f);
 
-        view = glm::lookAt(cameraPos, cameraPos + glm::vec3(-0.5f, -0.5f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        view = glm::lookAt(cameraPos, cameraPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         glm::mat4 projection = glm::mat4(1.0f);
 
@@ -192,13 +231,19 @@ int main()
         uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCOENGINE_MATRIX_P");
         glUniformMatrix4fv(uniformLocationId, 1, GL_FALSE, glm::value_ptr(projection));
 
+        uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCScreenResolution");
+        glUniform2fv(uniformLocationId, 1, &screenResolution.x);
+
+        uniformLocationId = glGetUniformLocation(l_shaderProgramId, "MCWorldSpaceLightPos");
+        glUniform3fv(uniformLocationId, 1, &lightPos.x);
+
         glUseProgram(0);
 
         glUseProgram(l_shaderProgramId);
         glBindVertexArray(l_vao);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, l_ibo);
 
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
@@ -206,7 +251,7 @@ int main()
 
 
         glfwSwapBuffers(window);
-        t += 0.1f;
+        t += 0.01f;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }
