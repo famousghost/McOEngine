@@ -1,8 +1,8 @@
 #include <iostream>
+#include <vector>
 #include "Material.h"
 #include "GameWindow.h"
-#include <glad.h>
-#include <GLFW/glfw3.h>
+#include "VertexArrayObject.h"
 #include "Math.h"
 #include "Libs/glm-0.9.6.3/glm/glm/gtc/matrix_transform.hpp"
 #include "Libs/glm-0.9.6.3/glm/glm/gtc/type_ptr.hpp"
@@ -39,7 +39,7 @@ int main()
     //Triangle with simple shader project init
 
     //Create Shaders
-    std::shared_ptr<Shaders::Shader> l_fullScreenShader = std::make_shared<Shaders::Shader>("Shaders/Simple/FullScreen");
+    std::shared_ptr<Shaders::Shader> l_fullScreenShader = std::make_shared<Shaders::Shader>("Shaders/Simple/Cube");
 
     //Create Material
     Material l_fullScreenMaterial;
@@ -48,49 +48,68 @@ int main()
 
     //Create Vertex Arrays
 
-    float3 l_vertices[4]
+    std::vector<Vertex> l_vertex = 
     {
-        float3(-1.0f, -1.0f, 0.0f),
-        float3(-1.0f, 1.0f, 0.0f),
-        float3(1.0f, 1.0f, 0.0f),
-        float3(1.0f, -1.0f, 0.0f)
+        // position, normal, color, uv
+        //Front
+        Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)), // 0
+        Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)), // 1
+        Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)), // 2
+        Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)), // 3
+
+        //Back
+        Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)), // 4
+        Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)), // 5
+        Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)), // 6
+        Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)), // 7
+
+        //Right
+        Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)), // 8
+        Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)), // 9
+        Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)), // 10
+        Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)), // 11
+
+        //Left
+        Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)), // 12
+        Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)), // 13
+        Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)), // 14
+        Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)), // 15
+
+        //Top
+        Vertex(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f)), // 16
+        Vertex(glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 1.0f)), // 17
+        Vertex(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 1.0f)), // 18
+        Vertex(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1.0f, 0.0f)), // 19
+        
+        //Bottom
+        Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec2(0.0f, 0.0f)), // 20
+        Vertex(glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec2(0.0f, 1.0f)), // 21
+        Vertex(glm::vec3(1.0f, -1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec2(1.0f, 1.0f)), // 22
+        Vertex(glm::vec3(1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec2(1.0f, 0.0f)), // 23
     };
 
-    GLuint l_indices[6]
+    std::vector<unsigned int> l_indices = 
     {
         0, 3, 2,
-        1, 2, 0
+        1, 0, 2,
+        4, 6, 7,
+        5, 6, 4,
+        8, 11, 10,
+        9, 8, 10,
+        12, 15, 14,
+        13, 12, 14,
+        16, 19, 18,
+        17, 16, 18,
+        20, 23, 22,
+        21, 20, 22
+
     };
-    
 
-    GLuint l_vao;
-    GLuint l_vbo;
-    GLuint l_ibo;
+    VertexArrayObject l_vao;
 
-    glGenVertexArrays(1, &l_vao);
-    
-    glBindVertexArray(l_vao);
+    l_vao.AddValuesToAtrribPointer(l_vertex);
+    l_vao.AddIndices(l_indices);
 
-    glGenBuffers(1, &l_vbo);
-    glGenBuffers(1, &l_ibo);
-
-    glBindBuffer(GL_ARRAY_BUFFER, l_vao);
-
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float3), l_vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float3), (GLvoid*)0);
-
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, l_ibo);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(l_indices), l_indices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    glBindVertexArray(0);
 
     //Project Init End
 
@@ -101,7 +120,8 @@ int main()
     glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 
-
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     glEnable(GL_DEPTH_TEST);
     float t = 0.0f;
     while (l_gameWindow.ShouldCloseWindow())
@@ -119,6 +139,7 @@ int main()
 
         projection = glm::perspective(glm::radians(45.0f), (float)WINDOW_WIDTH / WINDOW_HEIGHT, NEAR_PLANE, FAR_PLANE);
 
+        //Update Material properties
         GLuint l_shaderProgramId = l_fullScreenMaterial.GetShaderProgramId();
         glUseProgram(l_shaderProgramId);
 
@@ -139,16 +160,19 @@ int main()
         glUniform3fv(uniformLocationId, 1, &lightPos.x);
 
         glUseProgram(0);
+        //Update Material properties
 
+        //Draw Cube
         glUseProgram(l_shaderProgramId);
-        glBindVertexArray(l_vao);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, l_ibo);
+        l_vao.BindVAO();
+        l_vao.BindEBO();
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
+        l_vao.UnbindEBO();
+        l_vao.UnbindVAO();
         glUseProgram(0);
+        //Draw Cube
 
 
         glfwSwapBuffers(l_gameWindow.GetWindowPointer());
@@ -156,10 +180,6 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }
-
-    glDeleteVertexArrays(1, &l_vao);
-    glDeleteBuffers(1, &l_vbo);
-    glDeleteBuffers(1, &l_ibo);
 
     return 0;
 }

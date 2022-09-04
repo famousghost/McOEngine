@@ -52,6 +52,12 @@
     <Filter Include="Pliki nagłówkowe\GUI">
       <UniqueIdentifier>{1987cf17-9e7c-4029-b9bc-1dc3b23fdd05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\VERTEX_ARRAY_OBJECT">
+      <UniqueIdentifier>{088d6bb7-53f2-4f28-9f4c-4d1c0fd012ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\VERTEX_ARRAY_OBJECT">
+      <UniqueIdentifier>{900461e4-0a84-4781-a6b2-af8ac6ec081d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="GameWindow.cpp">
       <Filter>Pliki źródłowe\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexArrayObject.cpp">
+      <Filter>Pliki źródłowe\VERTEX_ARRAY_OBJECT</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="GameWindow.h">
       <Filter>Pliki nagłówkowe\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArrayObject.h">
+      <Filter>Pliki nagłówkowe\VERTEX_ARRAY_OBJECT</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
