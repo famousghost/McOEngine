@@ -3,6 +3,7 @@
 #include "Material.h"
 #include "GameWindow.h"
 #include "VertexArrayObject.h"
+#include "TextureLoader.h"
 #include "Math.h"
 #include "Libs/glm-0.9.6.3/glm/glm/gtc/matrix_transform.hpp"
 #include "Libs/glm-0.9.6.3/glm/glm/gtc/type_ptr.hpp"
@@ -34,9 +35,6 @@ int main()
         std::cerr << "Cannot initialize GLAD Fialed: " << glad_glGetError() << std::endl;
         return -1;
     }
-
-
-    //Triangle with simple shader project init
 
     //Create Shaders
     std::shared_ptr<Shaders::Shader> l_fullScreenShader = std::make_shared<Shaders::Shader>("Shaders/Simple/Cube");
@@ -110,6 +108,22 @@ int main()
     l_vao.AddValuesToAtrribPointer(l_vertex);
     l_vao.AddIndices(l_indices);
 
+    //Create Vertex Arrays
+
+    //Load Textures
+    TextureLoader l_textureLoader;
+    l_textureLoader.fetchChannelFormat(3);
+    GLuint l_brickTexture = l_textureLoader.loadTexture("Textures/Bricks.jpg", GL_REPEAT, GL_LINEAR);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, l_brickTexture);
+
+    unsigned int l_shaderProgramId = l_fullScreenMaterial.GetShaderProgramId();
+    glUseProgram(l_shaderProgramId);
+    unsigned int l_brickId = glGetUniformLocation(l_shaderProgramId, "Texture0");
+    glUniform1i(l_brickId, 0);
+    glUseProgram(0);
+    //Load Textures
 
     //Project Init End
 

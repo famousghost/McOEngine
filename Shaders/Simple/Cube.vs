@@ -8,9 +8,11 @@ uniform mat4 MCOENGINE_MATRIX_V;
 uniform mat4 MCOENGINE_MATRIX_P;
 
 out vec3 fs_color;
+out vec2 fs_uv;
 
 void main()
 {
 	gl_Position = MCOENGINE_MATRIX_P * MCOENGINE_MATRIX_V * MCOENGINE_MATRIX_M * vec4(vertex, 1.0f);
 	fs_color = color;
+	fs_uv = uv;
 }
