@@ -28,6 +28,30 @@
     <Filter Include="Pliki źródłowe\LOADERS">
       <UniqueIdentifier>{76335d31-c61e-4d09-897c-35589fa7b8e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\MATH">
+      <UniqueIdentifier>{78897d2b-9ce8-4216-809d-06879a2db477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\SHADERS">
+      <UniqueIdentifier>{971f5cf9-9aea-4cc0-91a5-48df8cd33495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\MATERIALS">
+      <UniqueIdentifier>{96d3d5ed-df65-46d3-8cef-adc3ae0da4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\MATH">
+      <UniqueIdentifier>{ba76a254-e591-46f3-af8b-66b4bdc34c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\SHADERS">
+      <UniqueIdentifier>{1e967a66-f3f8-4b47-93dc-3bf6fd26e7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\MATERIALS">
+      <UniqueIdentifier>{1551a243-cd1d-4536-809c-440aac2db9fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\GUI">
+      <UniqueIdentifier>{deaef039-f43f-4273-b9b4-7bb7ad405c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\GUI">
+      <UniqueIdentifier>{1987cf17-9e7c-4029-b9bc-1dc3b23fdd05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +63,15 @@
     <ClCompile Include="ShaderLoader.cpp">
       <Filter>Pliki źródłowe\LOADERS</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Pliki źródłowe\SHADERS</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Pliki źródłowe\MATERIALS</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWindow.cpp">
+      <Filter>Pliki źródłowe\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Libs\KHR\khrplatform.h">
@@ -49,6 +82,18 @@
     </ClInclude>
     <ClInclude Include="ShaderLoader.h">
       <Filter>Pliki nagłówkowe\LOADERS</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Pliki nagłówkowe\MATH</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Pliki nagłówkowe\SHADERS</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Pliki nagłówkowe\MATERIALS</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWindow.h">
+      <Filter>Pliki nagłówkowe\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
