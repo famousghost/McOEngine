@@ -20,6 +20,8 @@ float diffuse(vec3 wpos, vec3 normal)
 void main()
 {
 	vec3 col = texture(Texture0, fs_uv).rgb;
+	float ambient = 0.2f;
+	
 	float diff = diffuse(fs_wpos.xyz, fs_normal);
-	fragColor = vec4(col * diff, 1.0f);
+	fragColor = vec4(col * (diff + ambient), 1.0f);
 }

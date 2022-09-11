@@ -17,7 +17,7 @@ void main()
 {
 	fs_wpos = MCOENGINE_MATRIX_M * vec4(vertex, 1.0f); 
 	gl_Position = MCOENGINE_MATRIX_P * MCOENGINE_MATRIX_V * fs_wpos;
-	fs_normal = mat3(transpose(inverse(MCOENGINE_MATRIX_M))) * normal;
+	fs_normal = normalize(mat3(transpose(inverse(MCOENGINE_MATRIX_M))) * normal);
 	fs_color = color;
 	fs_uv = uv;
 }
