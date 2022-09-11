@@ -30,6 +30,11 @@ constexpr float FAR_PLANE = 1000.0f;
 using namespace McOEngine;
 using namespace Math;
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
 int main()
 {
 
@@ -206,6 +211,7 @@ int main()
         glUseProgram(0);
         //Update Shader global properties
 
+        glfwSetFramebufferSizeCallback(l_gameWindow.GetWindowPointer(), framebuffer_size_callback);
 
         for(int i = 0; i < m; ++i)
         {
@@ -239,9 +245,12 @@ int main()
 
 
         glfwSwapBuffers(l_gameWindow.GetWindowPointer());
-        alpha += 0.01f;
+        alpha += 10.0f * difference;
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        int width, height;
+        glfwGetFramebufferSize(l_gameWindow.GetWindowPointer(), &width, &height);
+        glViewport(0, 0, width, height);
 
         if(difference > 0.0f)
         {
